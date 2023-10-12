@@ -81,6 +81,60 @@ class BinarySearchTree {
     levelOrder() {        // Binary Search Tree Breadth First Search
         // Use the optimised queue implementation
         const queue = []
+        queue.push(this.root)
+        while (queue.length) {
+            let curr = queue.shift()
+            console.log(curr.value)
+            if (curr.left) {
+                queue.push(curr.left)
+            }
+            if (curr.right) {
+                queue.push(curr.right)
+            }
+        }
+    }
+
+    min(root) {
+        if (!root.left) {
+            return root.value
+        } else {
+            return this.min(root.left)
+        }
+    }
+
+    max(root) {
+        if (!root.right) {
+            return root.value
+        } else {
+            return this.min(root.right)
+        }
+    }
+
+    delete(value) {
+        this.root = this.deleteNode(this.root, value)
+    }
+
+    deleteNode(root, value) {
+        if (root === null) {
+            return root
+        }
+        if (value < root.value) {
+            root.left = this.deleteNode(root.left, value)
+        } else if (value > root.value) {
+            root.right = this.deleteNode(root.left, value)
+        } else {                     // means agar value === root.value
+            if (!root.left && !root.right) {
+                return null
+            }
+            if (!root.left) {
+                return root.right
+            } else if (!root.right) {
+                return root.left
+            }
+            root.value = this.min(root.right)
+            root.right = this.deleteNode(root.right, root.value)
+        }
+        return root
     }
 }
 
@@ -93,12 +147,27 @@ bst.insert(10)
 bst.insert(5)
 bst.insert(15)
 bst.insert(3)
-bst.insert(7)
+// bst.insert(7)
 
-console.log(bst.search(bst.root, 10))
-console.log(bst.search(bst.root, 5))
-console.log(bst.search(bst.root, 15))
+// console.log(bst.search(bst.root, 10))
+// console.log(bst.search(bst.root, 5))
+// console.log(bst.search(bst.root, 15))
 
-bst.preOrder(bst.root)
-bst.inOrder(bst.root)
-bst.postOrder(bst.root)
+// // bst.preOrder(bst.root)
+// // bst.inOrder(bst.root)
+// // bst.postOrder(bst.root)
+// bst.levelOrder(bst.root)
+
+// console.log(bst.min(bst.root));
+// console.log(bst.max(bst.root));
+
+bst.levelOrder()
+
+// bst.delete(3)
+// bst.levelOrder()
+
+// bst.delete(15)
+// bst.levelOrder()
+
+bst.delete(10)
+bst.levelOrder()
